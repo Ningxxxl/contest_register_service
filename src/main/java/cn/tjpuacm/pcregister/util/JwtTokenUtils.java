@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.Date;
 import java.util.Map;
@@ -12,6 +13,8 @@ import java.util.Map;
  * @author ningxy
  * @date 2018-10-21 20:15
  */
+
+@Configuration
 public class JwtTokenUtils {
 
     public static final String TOKEN_HEADER = "Authorization";
@@ -25,7 +28,7 @@ public class JwtTokenUtils {
     /**
      * ISSUER
      */
-    private static final String ISS = "ningxy";
+    private static String ISS = "ningxy";
 
     /**
      * 过期时间是(秒)，1个小时=3600秒
@@ -102,8 +105,14 @@ public class JwtTokenUtils {
      * @return true: 有效（未过期）; false: 失效（过期）
      */
     public static boolean isValid(String token) {
-        Date d = getTokenBody(token).getExpiration();
-        return getTokenBody(token).getExpiration().after(new Date());
+        boolean res = false;
+        try {
+            getTokenBody(token).getExpiration().after(new Date());
+            res = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     /**
@@ -121,6 +130,11 @@ public class JwtTokenUtils {
 
     @Value("${jwt.secret}")
     public void setSecret(String secret) {
-        this.SECRET = secret;
+        JwtTokenUtils.SECRET = secret;
+    }
+
+    @Value("${jwt.issuer}")
+    public void setIssuer(String issuer) {
+        JwtTokenUtils.ISS = issuer;
     }
 }
