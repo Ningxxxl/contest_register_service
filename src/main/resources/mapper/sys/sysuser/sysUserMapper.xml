@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tjpuacm.contest_register_service.system.user.dao.SysUserRepository">
+    <resultMap id="BaseResultMap" type="cn.tjpuacm.contest_register_service.system.user.po.SysUserPO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="email" property="email" jdbcType="INTEGER"/>
+        <result column="student_id" property="studentId" jdbcType="VARCHAR"/>
+        <result column="school" property="school" jdbcType="VARCHAR"/>
+        <result column="institute" property="institute" jdbcType="VARCHAR"/>
+        <result column="major" property="major" jdbcType="VARCHAR"/>
+        <result column="clazz" property="clazz" jdbcType="VARCHAR"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="is_delete" property="isDelete" jdbcType="INTEGER"/>
+        <result column="is_enable" property="isEnable" jdbcType="INTEGER"/>
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        email, student_id, school, institute, major, clazz, real_name, phone, gmt_create, gmt_modified
+    </sql>
+
+    <insert id="insertUser" parameterType="cn.tjpuacm.contest_register_service.system.user.po.SysUserPO">
+        insert into sys_user
+        (<include refid="Base_Column_List"/>)
+        values (#{email}, #{studentId}, #{school}, #{institute}, #{major}, #{clazz}, #{realName}, #{phone}, now(), now())
+    </insert>
+</mapper>

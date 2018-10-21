@@ -1,0 +1,23 @@
+# ===============================
+# = HTTP/HTTPS
+# ===============================
+server:
+  port: 8082
+
+# ===============================
+# = SPRING CONFIG
+# ===============================
+spring:
+  profiles:
+    active: dev
+  thymeleaf:
+    cache: false
+
+# ===============================
+# = MYBATIS
+# ===============================
+mybatis:
+  typeAliasesPackage: cn.tjpuacm.contest_regsiter_service.*.*.po
+  mapperLocations: classpath:mapper/**/*Mapper.xml
+  configuration:
+    default-statement-timeout: 20
