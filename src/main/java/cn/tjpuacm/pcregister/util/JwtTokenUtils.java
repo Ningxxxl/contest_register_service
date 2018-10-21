@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * @author ningxy
- * @date 2018-10-18 16:41
+ * @date 2018-10-21 20:15
  */
 public class JwtTokenUtils {
 
@@ -59,12 +59,11 @@ public class JwtTokenUtils {
     /**
      * 创建token
      *
-     * @param claimsMap    自定义参数Map
-     * @param isRememberMe 是否选择了'记住我'
+     * @param claimsMap  自定义参数Map
+     * @param expiration 有效时间（秒）
      * @return token
      */
-    public static String generateToken(Map<String, Object> claimsMap, boolean isRememberMe) {
-        final long expiration = isRememberMe ? EXPIRATION_REMEMBER : EXPIRATION;
+    public static String generateToken(Map<String, Object> claimsMap, long expiration) {
         final long currentTimeMillis = System.currentTimeMillis();
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, SECRET)
