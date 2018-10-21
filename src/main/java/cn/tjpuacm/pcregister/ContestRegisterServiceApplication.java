@@ -1,11 +1,14 @@
-package cn.tjpuacm.contest_register_service;
+package cn.tjpuacm.pcregister;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author ningxy
+ */
 @SpringBootApplication
-@MapperScan(basePackages = "cn.tjpuacm.contest_register_service.**.dao")
+@MapperScan(basePackages = "cn.tjpuacm.pcregister.**.dao")
 public class ContestRegisterServiceApplication {
 
     public static void main(String[] args) {

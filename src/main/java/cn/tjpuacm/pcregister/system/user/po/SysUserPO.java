@@ -1,4 +1,4 @@
-package cn.tjpuacm.contest_register_service.system.user.po;
+package cn.tjpuacm.pcregister.system.user.po;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

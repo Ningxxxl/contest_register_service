@@ -1,4 +1,4 @@
-package cn.tjpuacm.contest_register_service.config;
+package cn.tjpuacm.pcregister.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;

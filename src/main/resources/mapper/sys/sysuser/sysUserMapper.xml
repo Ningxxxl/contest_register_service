@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.tjpuacm.contest_register_service.system.user.dao.SysUserRepository">
-    <resultMap id="BaseResultMap" type="cn.tjpuacm.contest_register_service.system.user.po.SysUserPO">
+<mapper namespace="cn.tjpuacm.pcregister.system.user.dao.SysUserRepository">
+    <resultMap id="BaseResultMap" type="cn.tjpuacm.pcregister.system.user.po.SysUserPO">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="email" property="email" jdbcType="INTEGER"/>
         <result column="student_id" property="studentId" jdbcType="VARCHAR"/>
@@ -21,7 +21,7 @@
         email, student_id, school, institute, major, clazz, real_name, phone, gmt_create, gmt_modified
     </sql>
 
-    <insert id="insertUser" parameterType="cn.tjpuacm.contest_register_service.system.user.po.SysUserPO">
+    <insert id="insertUser" parameterType="cn.tjpuacm.pcregister.system.user.po.SysUserPO">
         insert into sys_user
         (<include refid="Base_Column_List"/>)
         values (#{email}, #{studentId}, #{school}, #{institute}, #{major}, #{clazz}, #{realName}, #{phone}, now(), now())

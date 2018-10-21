@@ -1,8 +1,8 @@
-package cn.tjpuacm.contest_register_service.system.user.service.impl;
+package cn.tjpuacm.pcregister.system.user.service.impl;
 
-import cn.tjpuacm.contest_register_service.system.user.dao.SysUserRepository;
-import cn.tjpuacm.contest_register_service.system.user.po.SysUserPO;
-import cn.tjpuacm.contest_register_service.system.user.service.SysUserService;
+import cn.tjpuacm.pcregister.system.user.dao.SysUserRepository;
+import cn.tjpuacm.pcregister.system.user.po.SysUserPO;
+import cn.tjpuacm.pcregister.system.user.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,12 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     SysUserRepository sysUserRepository;
 
+    /**
+     * 插入（新增）用户
+     *
+     * @param userPO SysUserPO
+     * @return rows
+     */
     @Override
     public int insertUser(SysUserPO userPO) {
         return sysUserRepository.insertUser(userPO);
