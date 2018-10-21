@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+
 /**
  * @author ningxy
  * @date 2018-10-21 15:34
@@ -18,6 +20,11 @@ public class MailVO {
     private String recipient;
 
     /**
+     * 接收人
+     */
+    private String[] recipientsArray;
+
+    /**
      * 邮件主题
      */
     private String subject;
@@ -26,4 +33,14 @@ public class MailVO {
      * 邮件内容
      */
     private String content;
+
+    /**
+     * 参数映射Map
+     */
+    private Map<String, Object> paramsMap;
+
+    /**
+     * Freemarker模板名称
+     */
+    private String templateName;
 }

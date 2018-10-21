@@ -13,4 +13,6 @@ public interface MailService {
      * @param mailVO MailVO
      */
     void sendSimpleMail(MailVO mailVO);
+
+    void sendMailFromTemplate(MailVO mailVO);
 }
