@@ -18,12 +18,50 @@
     </resultMap>
 
     <sql id="Base_Column_List">
+        id, email, student_id, school, institute, major, clazz, real_name, phone, gmt_create, gmt_modified
+    </sql>
+
+    <sql id="Base_Insert_Column_List">
         email, student_id, school, institute, major, clazz, real_name, phone, gmt_create, gmt_modified
     </sql>
 
     <insert id="insertUser" parameterType="cn.tjpuacm.pcregister.system.user.po.SysUserPO">
         insert into sys_user
-        (<include refid="Base_Column_List"/>)
-        values (#{email}, #{studentId}, #{school}, #{institute}, #{major}, #{clazz}, #{realName}, #{phone}, now(), now())
+        (<include refid="Base_Insert_Column_List"/>)
+        values
+        (#{email}, #{studentId}, #{school}, #{institute}, #{major}, #{clazz}, #{realName}, #{phone}, now(), now())
     </insert>
+
+    <select id="getUser" parameterType="cn.tjpuacm.pcregister.system.user.vo.SysUserVO"
+            resultType="cn.tjpuacm.pcregister.system.user.po.SysUserPO">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
+        where is_delete = 0 and is_enable = 1
+        <if test="email != null">
+            and email = #{email}
+        </if>
+        <if test="studentId != null">
+            and student_id = #{studentId}
+        </if>
+        <if test="school != null">
+            and school = #{school}
+        </if>
+        <if test="institute != null">
+            and institute = #{institute}
+        </if>
+        <if test="major != null">
+            and major = #{major}
+        </if>
+        <if test="clazz != null">
+            and clazz = #{clazz}
+        </if>
+        <if test="realName != null">
+            and real_name = #{realName}
+        </if>
+        <if test="phone != null">
+            and phone = #{phone}
+        </if>
+        limit 1
+    </select>
 </mapper>
