@@ -7,5 +7,10 @@ import cn.tjpuacm.pcregister.system.mail.vo.MailVO;
  * @date 2018-10-21 14:45
  */
 public interface MailService {
-    void sendMail(MailVO mailVO);
+    /**
+     * 发送简单邮件
+     *
+     * @param mailVO MailVO
+     */
+    void sendSimpleMail(MailVO mailVO);
 }

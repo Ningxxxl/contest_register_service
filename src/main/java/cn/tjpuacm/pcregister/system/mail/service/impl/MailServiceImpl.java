@@ -32,8 +32,13 @@ public class MailServiceImpl implements MailService {
     @Value("${spring.mail.nickname}")
     private String nickname;
 
+    /**
+     * 发送简单邮件
+     *
+     * @param mailVO MailVO
+     */
     @Override
-    public void sendMail(MailVO mailVO) {
+    public void sendSimpleMail(MailVO mailVO) {
         try {
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
             simpleMailMessage.setFrom(getMailSender());
@@ -41,12 +46,16 @@ public class MailServiceImpl implements MailService {
             simpleMailMessage.setSubject(mailVO.getSubject());
             simpleMailMessage.setText(mailVO.getContent());
             javaMailSender.send(simpleMailMessage);
-            log.info("邮件发送成功 [to:" + mailVO.getRecipient() + "]");
+            log.info("Send mail success. [to:" + mailVO.getRecipient() + "]");
         } catch (Exception e) {
-            log.error("邮件发送失败", e.getMessage());
+            log.error("Send mail failed. ", e.getMessage());
         }
     }
 
+    /**
+     * 拼接昵称生成发送人信息
+     * @return String 发送人
+     */
     private String getMailSender() {
         return String.format("%s <%s>", nickname, username);
     }
