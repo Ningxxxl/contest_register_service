@@ -22,9 +22,9 @@ public class registerController {
     private long expiration;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String register(@RequestParam("email") String email, @RequestParam("stu_id") String studentId) {
+    public String register(@RequestParam("phone") String email, @RequestParam("stu_id") String studentId) {
         Map<String, Object> claimsMap = new HashMap<>();
-        claimsMap.put("email", email);
+        claimsMap.put("phone", email);
         claimsMap.put("studentId", studentId);
         return JwtTokenUtils.generateToken(claimsMap, expiration);
     }
