@@ -23,6 +23,8 @@ public class SysUserPO {
     private String clazz;
     private String realName;
     private String phone;
+    private Long isActivate;
+    private String activationCode;
     private Long isDelete;
     private Long isEnable;
     private Timestamp gmtCreate;

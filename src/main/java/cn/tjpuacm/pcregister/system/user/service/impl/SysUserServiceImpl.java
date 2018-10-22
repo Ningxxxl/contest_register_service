@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysUserServiceImpl implements SysUserService {
     @Autowired
-    SysUserRepository sysUserRepository;
+    private SysUserRepository sysUserRepository;
 
     /**
      * 插入（新增）用户
