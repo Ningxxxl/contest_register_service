@@ -7,5 +7,19 @@ import cn.tjpuacm.pcregister.system.user.po.SysUserPO;
  * @date 2018-10-22 16:47
  */
 public interface RegisterService {
+    /**
+     * 生成激活码
+     * @param phone 手机号
+     * @param studentId 学号
+     * @return 激活码
+     */
+    String generateActivationCode(String phone, String studentId);
+
+    /**
+     * 激活用户
+     *
+     * @param userPO SysUserPO
+     * @return rows
+     */
     int activate(SysUserPO userPO);
 }

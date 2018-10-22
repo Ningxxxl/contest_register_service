@@ -25,4 +25,20 @@ public interface SysUserRepository {
      * @return 查询到的用户 SysUserPO
      */
     SysUserPO getUser(SysUserVO userVO);
+
+    /**
+     * 根据学号查找验证码
+     *
+     * @param studentId 学号
+     * @return 验证码
+     */
+    String getActivationCodeByStudentId(String studentId);
+
+    /**
+     * 更新用户信息
+     *
+     * @param userPO SysUserPO
+     * @return rows
+     */
+    int updateUserByStudentId(SysUserPO userPO);
 }

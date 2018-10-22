@@ -42,4 +42,26 @@ public class SysUserServiceImpl implements SysUserService {
         final SysUserVO resUserVO = TransformerUtil.po2VO(SysUserVO.class, userPO);
         return resUserVO;
     }
+
+    /**
+     * 根据学号查找验证码
+     *
+     * @param studentId 学号
+     * @return 验证码
+     */
+    @Override
+    public String getActivationCodeByStudentId(String studentId) {
+        return sysUserRepository.getActivationCodeByStudentId(studentId);
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param userPO SysUserPO
+     * @return rows
+     */
+    @Override
+    public int updateUserByStudentId(SysUserPO userPO) {
+        return sysUserRepository.updateUserByStudentId(userPO);
+    }
 }

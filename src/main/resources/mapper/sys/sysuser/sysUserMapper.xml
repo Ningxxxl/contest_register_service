@@ -11,6 +11,8 @@
         <result column="clazz" property="clazz" jdbcType="VARCHAR"/>
         <result column="real_name" property="realName" jdbcType="VARCHAR"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="is_activate" property="isActivate" jdbcType="INTEGER"/>
+        <result column="activation_code" property="activation_code" jdbcType="VARCHAR"/>
         <result column="is_delete" property="isDelete" jdbcType="INTEGER"/>
         <result column="is_enable" property="isEnable" jdbcType="INTEGER"/>
         <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
@@ -22,14 +24,15 @@
     </sql>
 
     <sql id="Base_Insert_Column_List">
-        email, student_id, school, institute, major, clazz, real_name, phone, gmt_create, gmt_modified
+        email, student_id, school, institute, major, clazz, real_name, phone, is_activate, activation_code, gmt_create, gmt_modified
     </sql>
 
     <insert id="insertUser" parameterType="cn.tjpuacm.pcregister.system.user.po.SysUserPO">
         insert into sys_user
         (<include refid="Base_Insert_Column_List"/>)
         values
-        (#{email}, #{studentId}, #{school}, #{institute}, #{major}, #{clazz}, #{realName}, #{phone}, now(), now())
+        (#{email}, #{studentId}, #{school}, #{institute}, #{major}, #{clazz}, #{realName}, #{phone},
+        0, #{activationCode}, now(), now())
     </insert>
 
     <select id="getUser" parameterType="cn.tjpuacm.pcregister.system.user.vo.SysUserVO"
@@ -64,4 +67,46 @@
         </if>
         limit 1
     </select>
+
+    <select id="getActivationCodeByStudentId" parameterType="java.lang.String"
+            resultType="java.lang.String">
+        select activation_code
+        from sys_user
+        where is_delete = 0
+          and is_enable = 1
+          and student_id = #{studentId}
+        limit 1
+    </select>
+
+    <update id="updateUserByStudentId" parameterType="cn.tjpuacm.pcregister.system.user.po.SysUserPO">
+        update sys_user set gmt_modified = now()
+        <if test="email != null">
+            , email = #{email}
+        </if>
+        <if test="school != null">
+            , school = #{school}
+        </if>
+        <if test="institute != null">
+            , institute = #{institute}
+        </if>
+        <if test="major != null">
+            , major = #{major}
+        </if>
+        <if test="clazz != null">
+            , clazz = #{clazz}
+        </if>
+        <if test="realName != null">
+            , real_name = #{realName}
+        </if>
+        <if test="phone != null">
+            , phone = #{phone}
+        </if>
+        <if test="isActivate != null">
+            , is_activate = #{isActivate}
+        </if>
+        <if test="activationCode != null">
+            , activation_Code = #{activationCode}
+        </if>
+        where student_id = #{studentId}
+    </update>
 </mapper>
