@@ -3,6 +3,8 @@
 # ===============================
 server:
   port: 8082
+  servlet:
+    context-path: /tjpupc
 
 # ===============================
 # = SPRING CONFIG
