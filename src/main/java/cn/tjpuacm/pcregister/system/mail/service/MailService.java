@@ -14,5 +14,10 @@ public interface MailService {
      */
     void sendSimpleMail(MailVO mailVO);
 
+    /**
+     * 通过模板发送邮件
+     *
+     * @param mailVO MailVO
+     */
     void sendMailFromTemplate(MailVO mailVO);
 }

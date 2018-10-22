@@ -3,12 +3,10 @@ package cn.tjpuacm.pcregister.business.register.service.impl;
 import cn.tjpuacm.pcregister.business.register.service.RegisterService;
 import cn.tjpuacm.pcregister.system.user.po.SysUserPO;
 import cn.tjpuacm.pcregister.system.user.service.SysUserService;
-import cn.tjpuacm.pcregister.util.JwtTokenUtils;
+import cn.tjpuacm.pcregister.util.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 /**
  * @author ningxy
@@ -16,26 +14,36 @@ import java.util.Map;
  */
 @Slf4j
 @Service
-public class registerServiceImpl implements RegisterService {
+public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private SysUserService sysUserService;
 
     @Override
-    public int activate(SysUserPO userPO) {
-        String token = String.valueOf(userPO.getActivationCode());
-        int row = 0;
-        try {
-            Map<String, Object> claimsMap = JwtTokenUtils.getClaimsMap(token);
-            String phone = String.valueOf(claimsMap.get("phone"));
-            String studentId = String.valueOf(claimsMap.get("studentId"));
+    public String generateActivationCode(String phone, String studentId) {
+        SysUserPO userPO = new SysUserPO();
+        userPO.setIsActivate(0L);
+        userPO.setPhone(phone);
+        userPO.setStudentId(studentId);
+        final String activationCode = UUIDUtils.generateUUID().substring(24);
+        userPO.setActivationCode(activationCode);
+        int row = sysUserService.insertUser(userPO);
+        if (row == 1) {
+            return activationCode;
+        } else {
+            return "error";
+        }
+    }
 
-            boolean infoMatch = phone.equals(userPO.getPhone()) && studentId.equals(userPO.getStudentId());
-            if (infoMatch) {
-                userPO.setIsActivate(1L);
-                row = sysUserService.insertUser(userPO);
-            }
-        } catch (Exception e) {
-            log.error("验证出错，报名失败" + e.getMessage());
+    @Override
+    public int activate(SysUserPO userPO) {
+        final String studentId = String.valueOf(userPO.getStudentId());
+        final String activationCodeRes = sysUserService.getActivationCodeByStudentId(studentId);
+
+        final boolean isValid = activationCodeRes.equals(userPO.getActivationCode());
+        int row = 0;
+        if (isValid) {
+            userPO.setIsActivate(1L);
+            row = sysUserService.updateUserByStudentId(userPO);
         }
         return row;
     }
