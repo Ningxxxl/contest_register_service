@@ -3,9 +3,11 @@ package cn.tjpuacm.pcregister.business.register.service.impl;
 import cn.tjpuacm.pcregister.business.register.service.RegisterService;
 import cn.tjpuacm.pcregister.system.user.po.SysUserPO;
 import cn.tjpuacm.pcregister.system.user.service.SysUserService;
+import cn.tjpuacm.pcregister.util.SmsUtil;
 import cn.tjpuacm.pcregister.util.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,6 +20,12 @@ public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private SysUserService sysUserService;
 
+    @Value("${smsService.templateId}")
+    private int templateId;
+
+    @Value("${smsService.smsSign}")
+    private String smsSign;
+
     @Override
     public String generateActivationCode(String phone, String studentId) {
         SysUserPO userPO = new SysUserPO();
@@ -27,10 +35,12 @@ public class RegisterServiceImpl implements RegisterService {
         final String activationCode = UUIDUtils.generateUUID().substring(24);
         userPO.setActivationCode(activationCode);
         int row = sysUserService.insertUser(userPO);
-        if (row == 1) {
+
+        String smsRes = SmsUtil.sendSingleSMS(templateId, smsSign, phone, activationCode, "24h");
+        if (row == 1 && "OK".equals(smsRes)) {
             return activationCode;
         } else {
-            return "error";
+            return "error: " + row + ", " + smsRes;
         }
     }
 
