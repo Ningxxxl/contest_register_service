@@ -1,4 +1,4 @@
-package cn.tjpuacm.pcregister.result;
+package cn.tjpuacm.pcregister.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum GlobalErrorInfoEnum {
+public enum GlobalErrorEnum {
     /**
      * 成功
      */

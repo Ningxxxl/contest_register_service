@@ -38,7 +38,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         String smsRes = SmsUtil.sendSingleSMS(templateId, smsSign, phone, activationCode, "24h");
         if (row == 1 && "OK".equals(smsRes)) {
-            return activationCode;
+            return smsRes;
         } else {
             return "error: " + row + ", " + smsRes;
         }

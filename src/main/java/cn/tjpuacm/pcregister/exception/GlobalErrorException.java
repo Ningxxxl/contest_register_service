@@ -1,4 +1,4 @@
-package cn.tjpuacm.pcregister.result;
+package cn.tjpuacm.pcregister.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +13,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GlobalErrorInfoException extends Exception{
-    private ErrorInfoInterface errorInfo;
+public class GlobalErrorException extends Exception{
+    private GlobalErrorInterface errorInfo;
 }

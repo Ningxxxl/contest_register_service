@@ -1,5 +1,7 @@
-package cn.tjpuacm.pcregister.result;
+package cn.tjpuacm.pcregister.entity;
 
+import cn.tjpuacm.pcregister.enums.GlobalErrorEnum;
+import cn.tjpuacm.pcregister.exception.GlobalErrorInterface;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -27,15 +29,15 @@ public class ResultBody {
      */
     private Object data;
 
-    public ResultBody(ErrorInfoInterface errorInfo) {
+    public ResultBody(GlobalErrorInterface errorInfo) {
         this.code = errorInfo.getCode();
         this.message = errorInfo.getMessage();
     }
 
     public static ResultBody generateSuccessResult(Object dataObj) {
         return new ResultBody(
-                GlobalErrorInfoEnum.SUCCESS.getCode(),
-                GlobalErrorInfoEnum.SUCCESS.getMessage(),
+                GlobalErrorEnum.SUCCESS.getCode(),
+                GlobalErrorEnum.SUCCESS.getMessage(),
                 dataObj
         );
     }

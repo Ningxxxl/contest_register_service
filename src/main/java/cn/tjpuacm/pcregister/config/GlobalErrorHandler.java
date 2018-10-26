@@ -1,5 +1,8 @@
-package cn.tjpuacm.pcregister.result;
+package cn.tjpuacm.pcregister.config;
 
+import cn.tjpuacm.pcregister.entity.ResultBody;
+import cn.tjpuacm.pcregister.exception.GlobalErrorException;
+import cn.tjpuacm.pcregister.exception.GlobalErrorInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,11 +15,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @Slf4j
 @RestControllerAdvice
-public class GlobalErrorInfoHandler {
-    @ExceptionHandler(value = GlobalErrorInfoException.class)
-    public ResultBody errorHandlerOverJson(GlobalErrorInfoException exception) {
+public class GlobalErrorHandler {
+    @ExceptionHandler(value = GlobalErrorException.class)
+    public ResultBody errorHandlerOverJson(GlobalErrorException exception) {
         log.error(exception.getMessage(), exception);
-        ErrorInfoInterface errorInfo = exception.getErrorInfo();
+        GlobalErrorInterface errorInfo = exception.getErrorInfo();
         return new ResultBody(errorInfo);
     }
 
