@@ -11,7 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class GlobalErrorException extends Exception{
+public class GlobalErrorException extends Exception {
     private GlobalErrorInterface errorInfo;
 
     public GlobalErrorException(GlobalErrorInterface errorInfo) {
@@ -20,6 +20,11 @@ public class GlobalErrorException extends Exception{
 
     public GlobalErrorException(String message) {
         this.errorInfo = new TempError(message);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("GlobalError [%8d] => %s", this.errorInfo.getCode(), this.errorInfo.getMessage());
     }
 }
 

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalErrorHandler {
     @ExceptionHandler(value = GlobalErrorException.class)
     public ResultBody errorHandlerOverJson(GlobalErrorException exception) {
-        log.error(exception.getMessage(), exception);
+        log.error(exception.toString());
         GlobalErrorInterface errorInfo = exception.getErrorInfo();
         return new ResultBody(errorInfo);
     }
