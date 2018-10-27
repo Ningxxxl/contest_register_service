@@ -3,13 +3,12 @@ package cn.tjpuacm.pcregister.business.register.controller;
 import cn.tjpuacm.pcregister.business.register.service.RegisterService;
 import cn.tjpuacm.pcregister.entity.ResultBody;
 import cn.tjpuacm.pcregister.exception.GlobalErrorException;
-import cn.tjpuacm.pcregister.system.user.po.SysUserPO;
 import cn.tjpuacm.pcregister.system.user.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -29,12 +28,12 @@ public class RegisterController {
     private long expiration;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResultBody register(@RequestParam("phone") String phone, @RequestParam("studentId") String studentId) throws GlobalErrorException {
-        return ResultBody.generateSuccessResult(registerService.generateActivationCode(phone, studentId));
+    public ResultBody register(@RequestBody String userInfoJsonStr) throws GlobalErrorException {
+        return ResultBody.generateSuccessResult(registerService.generateActivationCode(userInfoJsonStr));
     }
 
     @RequestMapping(value = "/activate", method = RequestMethod.POST)
-    public ResultBody activate(SysUserPO userPO) {
-        return ResultBody.generateSuccessResult(registerService.activate(userPO) == 1);
+    public ResultBody activate(@RequestBody String userInfoJsonStr) {
+        return ResultBody.generateSuccessResult(registerService.activate(userInfoJsonStr) == 1);
     }
 }

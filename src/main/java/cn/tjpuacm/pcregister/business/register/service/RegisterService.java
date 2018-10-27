@@ -1,7 +1,6 @@
 package cn.tjpuacm.pcregister.business.register.service;
 
 import cn.tjpuacm.pcregister.exception.GlobalErrorException;
-import cn.tjpuacm.pcregister.system.user.po.SysUserPO;
 
 /**
  * @author ningxy
@@ -10,17 +9,16 @@ import cn.tjpuacm.pcregister.system.user.po.SysUserPO;
 public interface RegisterService {
     /**
      * 生成激活码
-     * @param phone 手机号
-     * @param studentId 学号
+     * @param userInfoStr 手机号和学号信息 json字符串
      * @return 激活码
      */
-    String generateActivationCode(String phone, String studentId) throws GlobalErrorException;
+    String generateActivationCode(String userInfoStr) throws GlobalErrorException;
 
     /**
      * 激活用户
      *
-     * @param userPO SysUserPO
+     * @param userInfoJsonStr 用户信息
      * @return rows
      */
-    int activate(SysUserPO userPO);
+    int activate(String userInfoJsonStr);
 }

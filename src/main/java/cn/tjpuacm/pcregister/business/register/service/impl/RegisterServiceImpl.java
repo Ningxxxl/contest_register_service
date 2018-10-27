@@ -7,12 +7,14 @@ import cn.tjpuacm.pcregister.system.user.po.SysUserPO;
 import cn.tjpuacm.pcregister.system.user.service.SysUserService;
 import cn.tjpuacm.pcregister.util.SmsUtil;
 import cn.tjpuacm.pcregister.util.UUIDUtils;
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author ningxy
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Slf4j
 @Service
+@EnableTransactionManagement
 public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private SysUserService sysUserService;
@@ -31,12 +34,10 @@ public class RegisterServiceImpl implements RegisterService {
     private String smsSign;
 
     @Override
-    @Transactional
-    public String generateActivationCode(@RequestParam("phone") String phone, @RequestParam("studentId") String studentId) throws GlobalErrorException {
-        SysUserPO userPO = new SysUserPO();
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    public String generateActivationCode(String userInfoJsonStr) throws GlobalErrorException {
+        SysUserPO userPO = JSON.parseObject(userInfoJsonStr, SysUserPO.class);
         userPO.setIsActivate(0L);
-        userPO.setPhone(phone);
-        userPO.setStudentId(studentId);
         final String activationCode = UUIDUtils.generateUUID().substring(26);
         userPO.setActivationCode(activationCode);
         int row = sysUserService.insertUser(userPO);
@@ -44,7 +45,7 @@ public class RegisterServiceImpl implements RegisterService {
         if (row == 0) {
             throw new GlobalErrorException(RegisterEnum.INSERT_FAILED);
         } else {
-            String smsRes = SmsUtil.sendSingleSMS(templateId, smsSign, phone, activationCode, "24h");
+            String smsRes = SmsUtil.sendSingleSMS(templateId, smsSign, userPO.getPhone(), activationCode, "24h");
             if (!"OK".equals(smsRes)) {
                 throw new GlobalErrorException(smsRes);
             } else {
@@ -54,7 +55,8 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public int activate(SysUserPO userPO) {
+    public int activate(String userInfoJsonStr) {
+        final SysUserPO userPO = JSON.parseObject(userInfoJsonStr, SysUserPO.class);
         final String studentId = String.valueOf(userPO.getStudentId());
         final String activationCodeRes = sysUserService.getActivationCodeByStudentId(studentId);
 
