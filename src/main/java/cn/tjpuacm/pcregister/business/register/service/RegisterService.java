@@ -1,5 +1,6 @@
 package cn.tjpuacm.pcregister.business.register.service;
 
+import cn.tjpuacm.pcregister.exception.GlobalErrorException;
 import cn.tjpuacm.pcregister.system.user.po.SysUserPO;
 
 /**
@@ -13,7 +14,7 @@ public interface RegisterService {
      * @param studentId 学号
      * @return 激活码
      */
-    String generateActivationCode(String phone, String studentId);
+    String generateActivationCode(String phone, String studentId) throws GlobalErrorException;
 
     /**
      * 激活用户

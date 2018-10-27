@@ -28,7 +28,7 @@
     </sql>
 
     <insert id="insertUser" parameterType="cn.tjpuacm.pcregister.system.user.po.SysUserPO">
-        insert into sys_user
+        insert ignore into sys_user
         (<include refid="Base_Insert_Column_List"/>)
         values
         (#{email}, #{studentId}, #{school}, #{institute}, #{major}, #{clazz}, #{realName}, #{phone},

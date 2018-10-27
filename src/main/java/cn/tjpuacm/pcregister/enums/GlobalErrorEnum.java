@@ -1,7 +1,9 @@
 package cn.tjpuacm.pcregister.enums;
 
+import cn.tjpuacm.pcregister.exception.GlobalErrorInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 应用系统级别的错误码
@@ -11,7 +13,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum GlobalErrorEnum {
+public enum GlobalErrorEnum implements GlobalErrorInterface {
     /**
      * 成功
      */
@@ -22,7 +24,9 @@ public enum GlobalErrorEnum {
      */
     NOT_FOUND(-1, "service not found");
 
+    @Setter
     private Integer code;
 
+    @Setter
     private String message;
 }

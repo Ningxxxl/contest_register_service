@@ -26,6 +26,6 @@ public class GlobalErrorHandler {
     @ExceptionHandler(value = Exception.class)
     public ResultBody errorHandlerOverJson1(Exception exception) {
         log.error(exception.getMessage(), exception);
-        return new ResultBody(500, exception.getMessage(), null);
+        return new ResultBody(500, exception.getMessage());
     }
 }

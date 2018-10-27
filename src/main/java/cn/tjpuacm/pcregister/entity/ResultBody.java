@@ -29,6 +29,11 @@ public class ResultBody {
      */
     private Object data;
 
+    public ResultBody(Integer code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
     public ResultBody(GlobalErrorInterface errorInfo) {
         this.code = errorInfo.getCode();
         this.message = errorInfo.getMessage();
