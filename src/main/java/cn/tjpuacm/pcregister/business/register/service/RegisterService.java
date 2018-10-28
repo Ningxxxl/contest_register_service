@@ -21,4 +21,6 @@ public interface RegisterService {
      * @return rows
      */
     int activate(String userInfoJsonStr);
+
+    String test(String id);
 }

@@ -11,10 +11,14 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 /**
  * @author ningxy
@@ -26,6 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private SysUserService sysUserService;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Value("${smsService.templateId}")
     private int templateId;
@@ -67,5 +74,11 @@ public class RegisterServiceImpl implements RegisterService {
             row = sysUserService.updateUserByStudentId(userPO);
         }
         return row;
+    }
+
+    @Override
+    @Cacheable(value = "test", key ="#id", unless = "#result==null")
+    public String test(String id) {
+        return UUID.randomUUID().toString();
     }
 }
