@@ -21,6 +21,4 @@ public interface RegisterService {
      * @return rows
      */
     int activate(String userInfoJsonStr) throws GlobalErrorException;
-
-    String test(String id) throws GlobalErrorException;
 }

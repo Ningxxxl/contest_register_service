@@ -6,7 +6,10 @@ import cn.tjpuacm.pcregister.exception.GlobalErrorException;
 import cn.tjpuacm.pcregister.system.user.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author ningxy
@@ -32,10 +35,5 @@ public class RegisterController {
     @RequestMapping(value = "/activate", method = RequestMethod.POST)
     public ResultBody activate(@RequestBody String userInfoJsonStr) throws GlobalErrorException {
         return ResultBody.generateSuccessResult(registerService.activate(userInfoJsonStr) == 1);
-    }
-
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String test(@RequestParam("id") String id) throws GlobalErrorException {
-        return registerService.test(id);
     }
 }

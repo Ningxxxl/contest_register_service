@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -97,20 +96,6 @@ public class RegisterServiceImpl implements RegisterService {
             throw new GlobalErrorException(RegisterEnum.TOKEN_ERR);
         }
         return row;
-    }
-
-    @Override
-    public String test(String id) throws GlobalErrorException {
-        String s = UUID.randomUUID().toString();
-        long t = redisTemplate.opsForValue().increment("inc_" + id, 1);
-        log.info(String.valueOf(t));
-        if (t == 1) {
-            redisTemplate.expire("inc_ttl_" + id, expireTime, TimeUnit.SECONDS);
-            redisTemplate.opsForValue().set(id, s, expireTime, TimeUnit.SECONDS);
-        } else if (t > 1) {
-            throw new GlobalErrorException(RegisterEnum.OPTION_TOO_FAST);
-        }
-        return s;
     }
 
     /**
