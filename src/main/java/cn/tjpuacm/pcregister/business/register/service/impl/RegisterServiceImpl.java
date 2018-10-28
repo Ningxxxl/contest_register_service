@@ -40,8 +40,21 @@ public class RegisterServiceImpl implements RegisterService {
     @Value("${smsService.smsSign}")
     private String smsSign;
 
-    private long expireTime = 30;
+    /**
+     * 验证码有效时间
+     */
+    @Value("${service.register.activationCode.expireTime}")
+    private long expireTime;
 
+    /**
+     * 验证码发送的时间间隔
+     */
+    @Value("${service.register.activationCode.smsInterval}")
+    private long smsInterval;
+
+    /**
+     * 单日发送次数前缀
+     */
     private static final String cntPrefix = "cnt_sms_";
 
     @Override
@@ -51,13 +64,9 @@ public class RegisterServiceImpl implements RegisterService {
         userPO.setIsActivate(0L);
         final String activationCode = UUIDUtils.generateUUID().substring(26);
         userPO.setActivationCode(activationCode);
-//        int row = sysUserService.insertUser(userPO);
 
-        final String expireTimeStr = String.valueOf(TimeUnit.HOURS.convert(expireTime, TimeUnit.SECONDS)) + "小时";
+        final String expireTimeStr = String.valueOf(TimeUnit.MINUTES.convert(expireTime, TimeUnit.SECONDS)) + "分钟";
 
-//        if (row == 0) {
-//            throw new GlobalErrorException(RegisterEnum.INSERT_FAILED);
-//        } else {
         cacheCode(userPO.getPhone(), activationCode);
         String smsRes = SmsUtil.sendSingleSMS(templateId, smsSign, userPO.getPhone(), activationCode, expireTimeStr);
 
@@ -74,7 +83,6 @@ public class RegisterServiceImpl implements RegisterService {
             redisTemplate.expire(cntPrefix + userPO.getPhone(), timeToMiddleNight, TimeUnit.MILLISECONDS);
             return smsRes;
         }
-//        }
     }
 
     @Override
@@ -111,8 +119,8 @@ public class RegisterServiceImpl implements RegisterService {
         long t = redisTemplate.opsForValue().increment(countPrefix + phone, 1);
         log.info(String.valueOf(t));
         if (t == 1) {
-            redisTemplate.expire(countPrefix + phone, expireTime, TimeUnit.SECONDS);
-            redisTemplate.opsForValue().set(phone, code, expireTime, TimeUnit.SECONDS);
+            redisTemplate.expire(countPrefix + phone, smsInterval, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(phone, code, smsInterval, TimeUnit.SECONDS);
         } else if (t > 1) {
             throw new GlobalErrorException(RegisterEnum.OPTION_TOO_FAST);
         }
