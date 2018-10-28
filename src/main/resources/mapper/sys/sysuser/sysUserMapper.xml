@@ -32,7 +32,7 @@
         (<include refid="Base_Insert_Column_List"/>)
         values
         (#{email}, #{studentId}, #{school}, #{institute}, #{major}, #{clazz}, #{realName}, #{phone},
-        0, #{activationCode}, now(), now())
+        #{isActivate}, #{activationCode}, now(), now())
     </insert>
 
     <select id="getUser" parameterType="cn.tjpuacm.pcregister.system.user.vo.SysUserVO"

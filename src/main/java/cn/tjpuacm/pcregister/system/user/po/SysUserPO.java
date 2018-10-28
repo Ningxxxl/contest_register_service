@@ -23,7 +23,7 @@ public class SysUserPO {
     private String clazz;
     private String realName;
     private String phone;
-    private Long isActivate;
+    private Long isActivate = 0L;
     private String activationCode;
     private Long isDelete;
     private Long isEnable;

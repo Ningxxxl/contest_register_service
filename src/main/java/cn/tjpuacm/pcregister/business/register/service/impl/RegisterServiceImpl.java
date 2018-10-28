@@ -41,7 +41,9 @@ public class RegisterServiceImpl implements RegisterService {
     @Value("${smsService.smsSign}")
     private String smsSign;
 
-    private long expireTime = 20;
+    private long expireTime = 30;
+
+    private static final String cntPrefix = "cnt_sms_";
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
@@ -60,10 +62,9 @@ public class RegisterServiceImpl implements RegisterService {
         cacheCode(userPO.getPhone(), activationCode);
         String smsRes = SmsUtil.sendSingleSMS(templateId, smsSign, userPO.getPhone(), activationCode, expireTimeStr);
 
-        final String cntPrefix = "cnt_sms_";
         final long timeToMiddleNight = TimeUtil.getMillisNextEarlyMorning();
         Object smsNumOfPhone = redisTemplate.opsForValue().get(cntPrefix + userPO.getPhone());
-        if (smsNumOfPhone != null && 3 <= Long.valueOf(String.valueOf((smsNumOfPhone)))) {
+        if (smsNumOfPhone != null && 3 <= Long.valueOf(String.valueOf(smsNumOfPhone))) {
             throw new GlobalErrorException(RegisterEnum.OPTION_EXCESS);
         }
 
@@ -78,16 +79,22 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public int activate(String userInfoJsonStr) {
+    public int activate(String userInfoJsonStr) throws GlobalErrorException {
         final SysUserPO userPO = JSON.parseObject(userInfoJsonStr, SysUserPO.class);
-        final String studentId = String.valueOf(userPO.getStudentId());
-        final String activationCodeRes = sysUserService.getActivationCodeByStudentId(studentId);
 
-        final boolean isValid = activationCodeRes.equals(userPO.getActivationCode());
+        final Object obj = redisTemplate.opsForValue().get(userPO.getPhone());
+        if (obj == null) {
+            throw new GlobalErrorException(RegisterEnum.TOKEN_ERR);
+        }
+
+        final boolean isValid = String.valueOf(obj).equals(userPO.getActivationCode());
         int row = 0;
         if (isValid) {
             userPO.setIsActivate(1L);
-            row = sysUserService.updateUserByStudentId(userPO);
+
+            row = sysUserService.insertUser(userPO);
+        } else {
+            throw new GlobalErrorException(RegisterEnum.TOKEN_ERR);
         }
         return row;
     }
