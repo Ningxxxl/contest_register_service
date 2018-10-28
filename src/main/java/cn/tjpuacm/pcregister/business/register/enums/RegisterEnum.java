@@ -18,9 +18,13 @@ public enum RegisterEnum implements GlobalErrorInterface {
      */
     INSERT_FAILED(1100, "信息已存在"),
 
-    TOKEN_ERR(1201, "验证码无效"),
+    TOKEN_ERR(1200, "验证码无效"),
 
-    TOKEN_OVER_TIME(1202, "验证码过期"),
+    TOKEN_OVER_TIME(1201, "验证码过期"),
+
+    OPTION_TOO_FAST(1301, "您的操作过于频繁，休息休息一下~"),
+
+    OPTION_EXCESS(1302, "您的操作已达上限，明日再来吧"),
 
     ;
 

@@ -22,5 +22,5 @@ public interface RegisterService {
      */
     int activate(String userInfoJsonStr);
 
-    String test(String id);
+    String test(String id) throws GlobalErrorException;
 }

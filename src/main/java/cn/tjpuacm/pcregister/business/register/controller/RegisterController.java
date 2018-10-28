@@ -35,7 +35,7 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String test(@RequestParam("id") String id) {
+    public String test(@RequestParam("id") String id) throws GlobalErrorException {
         return registerService.test(id);
     }
 }
