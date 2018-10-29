@@ -6,6 +6,7 @@ import cn.tjpuacm.pcregister.system.user.service.SysUserService;
 import cn.tjpuacm.pcregister.system.user.vo.SysUserVO;
 import cn.tjpuacm.pcregister.util.TransformerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,6 +38,7 @@ public class SysUserServiceImpl implements SysUserService {
      * @throws InstantiationException
      */
     @Override
+    @Cacheable(value = "getUser", unless="#result == null")
     public SysUserVO getUser(SysUserVO userVO) throws IllegalAccessException, InstantiationException {
         final SysUserPO userPO = sysUserRepository.getUser(userVO);
         final SysUserVO resUserVO = TransformerUtil.po2VO(SysUserVO.class, userPO);

@@ -19,6 +19,7 @@ public class TransformerUtil {
      * @throws InstantiationException
      */
     public static <T> T po2VO(Class<T> clazz, Object po) throws IllegalAccessException, InstantiationException {
+        if (po == null) return null;
         T vo = clazz.newInstance();
         BeanUtils.copyProperties(po, vo);
         return vo;
@@ -35,6 +36,7 @@ public class TransformerUtil {
      * @throws InstantiationException
      */
     public static <T> T vo2PO(Class<T> clazz, Object vo) throws IllegalAccessException, InstantiationException {
+        if (vo == null) return null;
         T po = clazz.newInstance();
         BeanUtils.copyProperties(vo, po);
         return po;

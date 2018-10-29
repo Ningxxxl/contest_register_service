@@ -33,7 +33,7 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/activate", method = RequestMethod.POST)
-    public ResultBody activate(@RequestBody String userInfoJsonStr) throws GlobalErrorException {
+    public ResultBody activate(@RequestBody String userInfoJsonStr) throws GlobalErrorException, InstantiationException, IllegalAccessException {
         return ResultBody.generateSuccessResult(registerService.activate(userInfoJsonStr) == 1);
     }
 }

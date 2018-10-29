@@ -20,5 +20,5 @@ public interface RegisterService {
      * @param userInfoJsonStr 用户信息
      * @return rows
      */
-    int activate(String userInfoJsonStr) throws GlobalErrorException;
+    int activate(String userInfoJsonStr) throws GlobalErrorException, IllegalAccessException, InstantiationException;
 }

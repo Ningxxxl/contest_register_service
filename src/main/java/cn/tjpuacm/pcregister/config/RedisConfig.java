@@ -1,6 +1,7 @@
 package cn.tjpuacm.pcregister.config;
 
 import cn.tjpuacm.pcregister.util.FastJsonRedisSerializer;
+import com.alibaba.fastjson.parser.ParserConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -69,7 +70,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         反解析就会报com.alibaba.fastjson.JSONException: autoType is not support的异常
         可参考 https://blog.csdn.net/u012240455/article/details/80538540
          */
-//        ParserConfig.getGlobalInstance().addAccept("cn.tjpuacm.**.");
+        ParserConfig.getGlobalInstance().addAccept("cn.tjpuacm.");
         return cacheManager;
     }
 

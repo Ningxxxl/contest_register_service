@@ -5,6 +5,7 @@ import cn.tjpuacm.pcregister.business.register.service.RegisterService;
 import cn.tjpuacm.pcregister.exception.GlobalErrorException;
 import cn.tjpuacm.pcregister.system.user.po.SysUserPO;
 import cn.tjpuacm.pcregister.system.user.service.SysUserService;
+import cn.tjpuacm.pcregister.system.user.vo.SysUserVO;
 import cn.tjpuacm.pcregister.util.SmsUtil;
 import cn.tjpuacm.pcregister.util.TimeUtil;
 import cn.tjpuacm.pcregister.util.UUIDUtils;
@@ -77,8 +78,10 @@ public class RegisterServiceImpl implements RegisterService {
         }
 
         if (!"OK".equals(smsRes)) {
+//            短信发送失败
             throw new GlobalErrorException(smsRes);
         } else {
+//            短信发送成功
             redisTemplate.opsForValue().increment(cntPrefix + userPO.getPhone(), 1);
             redisTemplate.expire(cntPrefix + userPO.getPhone(), timeToMiddleNight, TimeUnit.MILLISECONDS);
             return smsRes;
@@ -86,8 +89,16 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public int activate(String userInfoJsonStr) throws GlobalErrorException {
+    public int activate(String userInfoJsonStr) throws GlobalErrorException, IllegalAccessException, InstantiationException {
         final SysUserPO userPO = JSON.parseObject(userInfoJsonStr, SysUserPO.class);
+
+        if (isPhoneExist(userPO.getPhone())) {
+            throw new GlobalErrorException("手机号已存在，不能重复报名");
+        }
+
+        if (isStudentIdExist(userPO.getStudentId())) {
+            throw new GlobalErrorException("学号已存在，不能重复报名");
+        }
 
         final Object obj = redisTemplate.opsForValue().get(userPO.getPhone());
         if (obj == null) {
@@ -126,5 +137,23 @@ public class RegisterServiceImpl implements RegisterService {
         }
     }
 
+    private boolean isPhoneExist(String phone) throws InstantiationException, IllegalAccessException {
+        SysUserVO userVO = new SysUserVO();
+        userVO.setPhone(phone);
+        if (sysUserService.getUser(userVO) != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    private boolean isStudentIdExist(String studentId) throws InstantiationException, IllegalAccessException {
+        SysUserVO userVO = new SysUserVO();
+        userVO.setStudentId(studentId);
+        if (sysUserService.getUser(userVO) != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
