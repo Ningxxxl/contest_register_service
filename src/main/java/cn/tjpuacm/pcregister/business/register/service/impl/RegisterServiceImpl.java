@@ -58,6 +58,12 @@ public class RegisterServiceImpl implements RegisterService {
      */
     private static final String cntPrefix = "cnt_sms_";
 
+    /**
+     * 频率限制前缀
+     */
+    private static final String countPrefix = "cnt_tmp_";
+
+
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     public String generateActivationCode(String userInfoJsonStr) throws GlobalErrorException {
@@ -79,6 +85,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         if (!"OK".equals(smsRes)) {
 //            短信发送失败
+            delCacheCode(userPO.getPhone());
             throw new GlobalErrorException(smsRes);
         } else {
 //            短信发送成功
@@ -126,7 +133,6 @@ public class RegisterServiceImpl implements RegisterService {
      * @throws GlobalErrorException
      */
     private void cacheCode(String phone, String code) throws GlobalErrorException {
-        final String countPrefix = "cnt_";
         long t = redisTemplate.opsForValue().increment(countPrefix + phone, 1);
         log.info(String.valueOf(t));
         if (t == 1) {
@@ -135,6 +141,14 @@ public class RegisterServiceImpl implements RegisterService {
         } else if (t > 1) {
             throw new GlobalErrorException(RegisterEnum.OPTION_TOO_FAST);
         }
+    }
+
+    /**
+     * 发送失败之后删除时限缓存
+     * @param phone
+     */
+    private void delCacheCode(String phone) {
+        redisTemplate.expire(countPrefix + phone, 5, TimeUnit.SECONDS);
     }
 
     private boolean isPhoneExist(String phone) throws InstantiationException, IllegalAccessException {
