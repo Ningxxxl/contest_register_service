@@ -11,6 +11,7 @@ public interface RegisterService {
      * 生成激活码
      * @param userInfoStr 手机号和学号信息 json字符串
      * @return 激活码
+     * @throws GlobalErrorException
      */
     String generateActivationCode(String userInfoStr) throws GlobalErrorException;
 
@@ -19,6 +20,9 @@ public interface RegisterService {
      *
      * @param userInfoJsonStr 用户信息
      * @return rows
+     * @throws GlobalErrorException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
      */
     int activate(String userInfoJsonStr) throws GlobalErrorException, IllegalAccessException, InstantiationException;
 }

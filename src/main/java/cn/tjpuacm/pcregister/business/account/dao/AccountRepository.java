@@ -11,6 +11,14 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface AccountRepository {
+
+    /**
+     * 查找用户的比赛账号
+     *
+     * @param studentId 学号
+     * @param phone     手机号
+     * @return 账号信息
+     */
     @Select("select " +
             "  su.student_id as `studentId`, " +
             "  su.phone as `phone`, " +

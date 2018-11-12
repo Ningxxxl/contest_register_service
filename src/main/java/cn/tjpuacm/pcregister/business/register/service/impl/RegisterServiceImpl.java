@@ -56,12 +56,12 @@ public class RegisterServiceImpl implements RegisterService {
     /**
      * 单日发送次数前缀
      */
-    private static final String cntPrefix = "cnt_sms_";
+    private static final String CNT_PREFIX = "cnt_sms_";
 
     /**
      * 频率限制前缀
      */
-    private static final String countPrefix = "cnt_tmp_";
+    private static final String COUNT_PREFIX = "cnt_tmp_";
 
 
     @Override
@@ -78,7 +78,7 @@ public class RegisterServiceImpl implements RegisterService {
         String smsRes = SmsUtil.sendSingleSMS(templateId, smsSign, userPO.getPhone(), activationCode, expireTimeStr);
 
         final long timeToMiddleNight = TimeUtil.getMillisNextEarlyMorning();
-        Object smsNumOfPhone = redisTemplate.opsForValue().get(cntPrefix + userPO.getPhone());
+        Object smsNumOfPhone = redisTemplate.opsForValue().get(CNT_PREFIX + userPO.getPhone());
         if (smsNumOfPhone != null && 3 <= Long.valueOf(String.valueOf(smsNumOfPhone))) {
             throw new GlobalErrorException(RegisterEnum.OPTION_EXCESS);
         }
@@ -89,8 +89,8 @@ public class RegisterServiceImpl implements RegisterService {
             throw new GlobalErrorException(smsRes);
         } else {
 //            短信发送成功
-            redisTemplate.opsForValue().increment(cntPrefix + userPO.getPhone(), 1);
-            redisTemplate.expire(cntPrefix + userPO.getPhone(), timeToMiddleNight, TimeUnit.MILLISECONDS);
+            redisTemplate.opsForValue().increment(CNT_PREFIX + userPO.getPhone(), 1);
+            redisTemplate.expire(CNT_PREFIX + userPO.getPhone(), timeToMiddleNight, TimeUnit.MILLISECONDS);
             return smsRes;
         }
     }
@@ -133,10 +133,10 @@ public class RegisterServiceImpl implements RegisterService {
      * @throws GlobalErrorException
      */
     private void cacheCode(String phone, String code) throws GlobalErrorException {
-        long t = redisTemplate.opsForValue().increment(countPrefix + phone, 1);
+        long t = redisTemplate.opsForValue().increment(COUNT_PREFIX + phone, 1);
         log.info(String.valueOf(t));
         if (t == 1) {
-            redisTemplate.expire(countPrefix + phone, smsInterval, TimeUnit.SECONDS);
+            redisTemplate.expire(COUNT_PREFIX + phone, smsInterval, TimeUnit.SECONDS);
             redisTemplate.opsForValue().set(phone, code, smsInterval, TimeUnit.SECONDS);
         } else if (t > 1) {
             throw new GlobalErrorException(RegisterEnum.OPTION_TOO_FAST);
@@ -148,7 +148,7 @@ public class RegisterServiceImpl implements RegisterService {
      * @param phone
      */
     private void delCacheCode(String phone) {
-        redisTemplate.expire(countPrefix + phone, 5, TimeUnit.SECONDS);
+        redisTemplate.expire(COUNT_PREFIX + phone, 5, TimeUnit.SECONDS);
     }
 
     private boolean isPhoneExist(String phone) throws InstantiationException, IllegalAccessException {

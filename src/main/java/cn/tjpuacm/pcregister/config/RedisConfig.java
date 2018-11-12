@@ -43,7 +43,11 @@ public class RedisConfig extends CachingConfigurerSupport {
      * 在此我们将自己配置RedisTemplate并定义Serializer。
      */
 
-// 存入redis时，默认使用的是JdkSerializationRedisSerializer，使得存入的数据全部序列化了，所需自定义一个RedisTemplate，使用其他序列化方式
+    /**
+     * 存入redis时，默认使用的是JdkSerializationRedisSerializer，使得存入的数据全部序列化了，所需自定义一个RedisTemplate，使用其他序列化方式
+     * @param connectionFactory
+     * @return
+     */
     @Bean
     @Primary
     public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
