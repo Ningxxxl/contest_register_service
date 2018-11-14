@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author ningxy
  * @date 2018-11-12 17:22
  */
-@Api(tags="账号API")
+@Api(tags="比赛账号")
 @RestController
 @RequestMapping("/account")
 public class AccountController {
