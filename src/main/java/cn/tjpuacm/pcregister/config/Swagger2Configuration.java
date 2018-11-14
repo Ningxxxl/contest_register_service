@@ -31,7 +31,7 @@ public class Swagger2Configuration {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("TJPUPC Register")
+                .title("TJPUPC Register API")
                 .description("报名系统API文档")
                 .version("1.0")
                 .contact(new Contact("nxy", "http://ningxy.cn", "16847955@qq.com"))
