@@ -174,23 +174,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <!-- swagger2markup plugin -->
-            <plugin>
-                <groupId>io.github.swagger2markup</groupId>
-                <artifactId>swagger2markup-maven-plugin</artifactId>
-                <version>${swagger2markup.version}</version>
-                <configuration>
-                    <!--此处端口一定要是当前项目启动所用的端口-->
-                    <swaggerInput>http://localhost:8082/tjpupc/v2/api-docs</swaggerInput>
-                    <!--<outputDir>${project.basedir}/src/docs/api/asciidoc/generated</outputDir>-->
-                    <outputDir>${project.basedir}/src/docs/api/markdown</outputDir>
-                    <config>
-                        <!-- 除了ASCIIDOC之外，还有MARKDOWN和CONFLUENCE_MARKUP可选 -->
-                        <swagger2markup.markupLanguage>MARKDOWN</swagger2markup.markupLanguage>
-                    </config>
-                </configuration>
-            </plugin>
-            <!-- swagger2markup plugin -->
         </plugins>
     </build>
 
