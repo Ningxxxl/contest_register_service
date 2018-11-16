@@ -1,6 +1,7 @@
 package cn.tjpuacm.pcregister.business.account.controller;
 
 import cn.tjpuacm.pcregister.business.account.service.AccountService;
+import cn.tjpuacm.pcregister.business.account.vo.AccountVO;
 import cn.tjpuacm.pcregister.entity.ResultBody;
 import cn.tjpuacm.pcregister.exception.GlobalErrorException;
 import io.swagger.annotations.Api;
@@ -26,7 +27,7 @@ public class AccountController {
 
     @ApiOperation(value="获取比赛账号", notes = "暂时是热身赛")
     @RequestMapping(method = RequestMethod.GET)
-    public ResultBody getAccount(@Param("studentId") String studentId, @Param("phone") String phone) throws GlobalErrorException {
+    public ResultBody<AccountVO> getAccount(@Param("studentId") String studentId, @Param("phone") String phone) throws GlobalErrorException {
         if (StringUtils.isEmpty(studentId) || StringUtils.isEmpty(phone)) {
             throw new GlobalErrorException("请填写完整参数");
         }
